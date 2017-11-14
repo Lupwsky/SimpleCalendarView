@@ -22,7 +22,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:contentDescription="@null"
-                android:background="@mipmap/icon_left"/>
+                android:background="@drawable/icon_left"/>
         </LinearLayout>
         
         <LinearLayout
@@ -41,7 +41,7 @@
                 android:contentDescription="@null"
                 android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
-                android:background="@mipmap/icon_rili"/>
+                android:background="@drawable/icon_calendar"/>
             
             <TextView
                 android:id="@+id/txtYearMonth"
@@ -65,7 +65,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginEnd="20dp"
                 android:contentDescription="@null"
-                android:background="@mipmap/icon_right"/>
+                android:background="@drawable/icon_right"/>
         </LinearLayout>
     </RelativeLayout>
     

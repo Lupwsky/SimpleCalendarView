@@ -50,7 +50,7 @@ public class DayView extends LinearLayout {
     private void init(Context context) {
         this.context = context;
         View view = LayoutInflater.from(context).inflate(R.layout.item_calendar_day_layout, null);
-        recyclerView = view.findViewById(R.id.rlContent);
+        recyclerView = (RecyclerView) view.findViewById(R.id.rlContent);
         addView(view);
     }
 

@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.lupw.calendarview.R;
 import com.lupw.calendarview.listener.OnCalenderSelectListener;
+import com.lupw.calendarview.listener.OnSelectListener;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class CalendarView extends LinearLayout {
     private CalendarViewDayPager calendarViewDayPager;
     private CalendarViewMonthPager calendarViewMonthPager;
 
-    private OnCalenderSelectListener onCalenderSelectListener;
+    private OnSelectListener onSelectListener;
     public static DateTime currDate;             // 当前选中的日期
 
     public CalendarView(Context context) {
@@ -228,10 +229,10 @@ public class CalendarView extends LinearLayout {
     /**
      * 设置日历选中监听事件
      *
-     * @param onCalenderSelectListener 日历选中监听事件
+     * @param onSelectListener 日历选中监听事件
      */
-    public void setOnCalenderSelectListener(OnCalenderSelectListener onCalenderSelectListener) {
-        this.onCalenderSelectListener = onCalenderSelectListener;
+    public void setOnCalenderSelectListener(OnSelectListener onSelectListener) {
+        this.onSelectListener = onSelectListener;
     }
 
 
@@ -259,9 +260,9 @@ public class CalendarView extends LinearLayout {
         calendarViewDayPager.setOnCalenderSelectListener(new OnCalenderSelectListener() {
             @Override
             public void selected(String date) {
-                if (onCalenderSelectListener != null) {
+                if (onSelectListener != null) {
                     currDate = new DateTime(date);
-                    onCalenderSelectListener.selected(date);
+                    onSelectListener.selected(date, isDayMode);
                 }
             }
         });
@@ -291,9 +292,9 @@ public class CalendarView extends LinearLayout {
         calendarViewMonthPager.setOnCalenderSelectListener(new OnCalenderSelectListener() {
             @Override
             public void selected(String date) {
-                if (onCalenderSelectListener != null) {
+                if (onSelectListener != null) {
                     currDate = new DateTime(date);
-                    onCalenderSelectListener.selected(date);
+                    onSelectListener.selected(date, isDayMode);
                 }
             }
         });

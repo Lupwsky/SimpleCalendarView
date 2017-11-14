@@ -23,7 +23,7 @@ public class DateTimeUtils {
      * @return         该月在视图上的天数
      */
     public static List<DateBean> getDayData(DateTime dateTime, DateTime startDate,
-                                                 DateTime endDate, DateTime currDate) {
+                                            DateTime endDate, DateTime currDate) {
         List<DateBean> resultData = new ArrayList<>();
         DateBean dateBean;
 
