@@ -32,6 +32,7 @@ public class CalendarView extends LinearLayout {
 
     private boolean isDayMode = true;  // 日历模式，true-日期，false-月份
     private String currYear, currMonth; // 当前选中的年份、月份
+    private boolean isMonthSelectEnable = true;
 
     private int startYear, startMonth, startDay;  // 默认为2015-01-01，在init方法中设置
     private int endYear, endMonth, endDay;        // 默认为今天，在init方法中设置
@@ -138,6 +139,7 @@ public class CalendarView extends LinearLayout {
         llYearMoth.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isMonthSelectEnable) return;
                 if (calendarViewDayPager.getVisibility() == GONE) {
                     calendarViewDayPager.setVisibility(VISIBLE);
                     calendarViewMonthPager.setVisibility(GONE);
@@ -298,5 +300,15 @@ public class CalendarView extends LinearLayout {
                 }
             }
         });
+    }
+
+
+    /**
+     * 设置是否可以选择月份
+     *
+     * @param enable enable
+     */
+    public void setMonthSelectEnable(boolean enable) {
+        isMonthSelectEnable = enable;
     }
 }
