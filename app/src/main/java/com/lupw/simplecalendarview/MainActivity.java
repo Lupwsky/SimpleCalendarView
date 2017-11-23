@@ -9,7 +9,7 @@ import com.lupw.calendarview.view.CalendarView;
 import com.lupw.calendarview.view.DialogCalendarView;
 
 public class MainActivity extends AppCompatActivity {
-    private DialogCalendarView dialogCalendarView;
+    private String currDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,15 +22,12 @@ public class MainActivity extends AppCompatActivity {
 
         Button btnOpen = findViewById(R.id.btnOpen);
         btnOpen.setOnClickListener(v -> {
-            if (dialogCalendarView == null) {
-                dialogCalendarView = DialogCalendarView.getInstance();
-                dialogCalendarView.setOnSelectListener((date, isDayMode) -> {
-                    Log.e("calendar", date);
-                });
-                dialogCalendarView.show(getSupportFragmentManager(), "calendar");
-            } else {
-                dialogCalendarView.show(getSupportFragmentManager(), "calendar");
-            }
+            DialogCalendarView dialogCalendarView = DialogCalendarView.getInstance(currDate);
+            dialogCalendarView.setOnSelectListener((date, isDayMode) -> {
+                Log.e("calendar", date);
+                currDate = date;
+            });
+            dialogCalendarView.show(getSupportFragmentManager(), "calendar");
         });
     }
 }

@@ -16,7 +16,6 @@ import com.lupw.calendarview.R;
  */
 
 public class WeekView extends View {
-    private final static String Tag = "WeekView";
     private String[] weekArray = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
     private int weekSize = 14;            // 文字尺寸，12px
     private int weekColor = Color.BLACK;  // 文字颜色

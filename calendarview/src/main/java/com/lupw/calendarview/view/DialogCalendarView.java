@@ -26,6 +26,21 @@ public class DialogCalendarView extends DialogFragment {
     }
 
 
+    /**
+     * 获取Dialog实例
+     *
+     * @param date 只允许2017-06和2017-08-08两种时间格式
+     * @return Dialog实例
+     */
+    public static DialogCalendarView getInstance(String date) {
+        DialogCalendarView dialogCalendarView = new DialogCalendarView();
+        Bundle bundle = new Bundle();
+        bundle.putString("date", date);
+        dialogCalendarView.setArguments(bundle);
+        return dialogCalendarView;
+    }
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -50,14 +65,34 @@ public class DialogCalendarView extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_calendar_view, null);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        // 设置当前选中的时间
+        String date = getArguments().getString("date");
+        date = date == null ? new DateTime().toString("yyyy-MM-dd") : date;
+        if (date.length() < 7) {
+            currDate = new DateTime();
+        } else if (date.length() == 7) {
+            String[] arrDate = date.split("-");
+            int year = Integer.parseInt(arrDate[0]);
+            int month = Integer.parseInt(arrDate[1]);
+            currDate = new DateTime(year, month, 1, 0, 0, 0);
+        } else {
+            String[] arrDate = date.split("-");
+            int year = Integer.parseInt(arrDate[0]);
+            int month = Integer.parseInt(arrDate[1]);
+            int day = Integer.parseInt(arrDate[2]);
+            currDate = new DateTime(year, month, day, 0, 0, 0);
+        }
+
+        // 当前选中的日期
+        calendarView = (CalendarView) view.findViewById(R.id.calendarView);
+
+        // 设置最选择的日期的范围
         DateTime dateTime = new DateTime();
         int endYear = dateTime.plusYears(1).getYear();
         int endMonth = dateTime.getMonthOfYear();
         int endDay = dateTime.getDayOfMonth();
-        if (calendarView != null) currDate = calendarView.getCurrDate();
-        currDate = currDate == null ? new DateTime() : currDate;
-        calendarView = (CalendarView) view.findViewById(R.id.calendarView);
         calendarView.setRangeDate(2016, 10, 6, endYear, endMonth, endDay);
+
         calendarView.setCurrentDate(currDate.getYear(), currDate.getMonthOfYear(), currDate.getDayOfMonth());
         calendarView.setOnCalenderSelectListener(new OnSelectListener() {
             @Override
