@@ -6,5 +6,5 @@ package com.lupw.calendarview.listener;
  */
 
 public interface OnSelectListener {
-    void selected(String date, boolean isDay);
+    void selected(String date, boolean isDayMode);
 }

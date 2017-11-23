@@ -1,6 +1,8 @@
 package com.lupw.calendarview.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 /**
@@ -9,6 +11,12 @@ import android.util.TypedValue;
  */
 
 public class DensityUtil {
+
+    public static int getWindowWidth(Activity context) {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        return displaymetrics.widthPixels;
+    }
 
     /**
      * dp转px
