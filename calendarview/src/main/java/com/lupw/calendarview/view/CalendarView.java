@@ -79,7 +79,7 @@ public class CalendarView extends LinearLayout {
         endYear = today.getYear();
         endMonth = today.getMonthOfYear();
         endDay = today.getDayOfMonth();
-        currDate = today;
+        currDate = currDate == null ? today : currDate;
         currYear = today.toString("yyyy年");
         currMonth = today.toString("yyyy年MM月");
 
@@ -168,11 +168,11 @@ public class CalendarView extends LinearLayout {
 
         monthList = getMonthList();
         calendarViewDayPager.setDate(monthList, startDate, endDate);
-        calendarViewDayPager.setCurrentItem(monthList.size() - 1);   // 默认滚动到最后一页
+        calendarViewDayPager.setCurrentItem(getCurrentMonthPosition(currDate));
 
         yearList = getYearList();
         calendarViewMonthPager.setDate(yearList, startDate, endDate);
-        calendarViewMonthPager.setCurrentItem(yearList.size() - 1);   // 默认滚动到最后一页
+        calendarViewMonthPager.setCurrentItem(getCurrentYearPosition(currDate));
     }
 
 
@@ -215,6 +215,49 @@ public class CalendarView extends LinearLayout {
     }
 
 
+    /**
+     * 获取
+     *
+     * @return 当前月份在列表中的位置
+     */
+    private int getCurrentMonthPosition(DateTime dateTime) {
+        int year = dateTime.getYear(), month = dateTime.getMonthOfYear();
+
+        DateTime tempDate;
+        for (int i = 0; i < monthList.size(); i++) {
+            tempDate = monthList.get(i);
+            if (tempDate.getYear() == year && tempDate.getMonthOfYear() == month) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+
+    /**
+     * 获取
+     *
+     * @return 当前年份在列表中的位置
+     */
+    private int getCurrentYearPosition(DateTime dateTime) {
+        int year = dateTime.getYear();
+
+        DateTime tempDate;
+        for (int i = 0; i < yearList.size(); i++) {
+            tempDate = yearList.get(i);
+            if (tempDate.getYear() == year) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+
+    /**
+     * 获取年份列表
+     *
+     * @return 年份列表
+     */
     public List<DateTime> getYearList () {
         List<DateTime> yearList = new ArrayList<>();
         DateTime dateTime = new DateTime(startYear, startMonth, 1, 0, 0, 0);
@@ -290,7 +333,7 @@ public class CalendarView extends LinearLayout {
             }
         });
 
-        // 设置选中日历某一天监听事件
+        // 设置选中月历监听事件
         calendarViewMonthPager.setOnCalenderSelectListener(new OnCalenderSelectListener() {
             @Override
             public void selected(String date) {
@@ -310,5 +353,14 @@ public class CalendarView extends LinearLayout {
      */
     public void setMonthSelectEnable(boolean enable) {
         isMonthSelectEnable = enable;
+    }
+
+
+    public void setCurrentDate(int year, int month, int day) {
+        currDate = new DateTime(year, month, day, 0, 0, 0);
+    }
+
+    public DateTime getCurrDate() {
+        return currDate;
     }
 }

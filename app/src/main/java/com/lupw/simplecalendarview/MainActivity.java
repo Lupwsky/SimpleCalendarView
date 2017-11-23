@@ -17,24 +17,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         CalendarView calendarView = findViewById(R.id.calendarView);
-        calendarView.setOnCalenderSelectListener(new OnSelectListener() {
-            @Override
-            public void selected(String date, boolean isDay) {
-                Log.e("Caneldar", date + " : " + isDay);
-            }
-        });
+        calendarView.setOnCalenderSelectListener((date, isDay) -> Log.e("Caneldar", date + " : " + isDay));
         calendarView.create();
 
         Button btnOpen = findViewById(R.id.btnOpen);
         btnOpen.setOnClickListener(v -> {
             if (dialogCalendarView == null) {
                 dialogCalendarView = DialogCalendarView.getInstance();
+                dialogCalendarView.setOnSelectListener((date, isDayMode) -> {
+                    Log.e("calendar", date);
+                });
                 dialogCalendarView.show(getSupportFragmentManager(), "calendar");
             } else {
-                if (!dialogCalendarView.isVisible()) {
-                    Log.e("e", "open");
-                    dialogCalendarView.show(getSupportFragmentManager(), "calendar");
-                }
+                dialogCalendarView.show(getSupportFragmentManager(), "calendar");
             }
         });
     }
