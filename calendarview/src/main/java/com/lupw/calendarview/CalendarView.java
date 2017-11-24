@@ -25,10 +25,6 @@ import java.util.List;
 
 @SuppressLint("SetTextI18n")
 public class CalendarView extends LinearLayout {
-    private Context context;
-    private LinearLayout llPre;        // 上一页
-    private LinearLayout llNext;       // 下一页
-    private LinearLayout llYearMoth;   // 日期选择
     private TextView txtYearMonth;     // 当前年月
 
     private boolean isDayMode = true;  // 日历模式，true-日期，false-月份
@@ -70,9 +66,7 @@ public class CalendarView extends LinearLayout {
      * @param context 上下文
      */
     private void init(Context context) {
-        this.context = context;
-
-        // 默认的时间范围
+        // 默认的时间范围2016-06-10至今日时间
         DateTime today = new DateTime();
         startYear = 2016;
         startMonth = 6;
@@ -86,9 +80,9 @@ public class CalendarView extends LinearLayout {
 
         // 获取视图控件
         View view = LayoutInflater.from(context).inflate(R.layout.calendar_view_layout, null);
-        llPre = (LinearLayout) view.findViewById(R.id.llPre);
-        llNext = (LinearLayout) view.findViewById(R.id.llNext);
-        llYearMoth = (LinearLayout) view.findViewById(R.id.llYearMoth);
+        LinearLayout llPre = (LinearLayout) view.findViewById(R.id.llPre);
+        LinearLayout llNext = (LinearLayout) view.findViewById(R.id.llNext);
+        LinearLayout llYearMoth = (LinearLayout) view.findViewById(R.id.llYearMoth);
         txtYearMonth = (TextView) view.findViewById(R.id.txtYearMonth);
         calendarDayViewPager = (CalendarDayViewPager) view.findViewById(R.id.calendarDayViewPager);
         calendarMonthViewPager = (CalendarMonthViewPager) view.findViewById(R.id.calendarMonthViewPager);
@@ -358,11 +352,26 @@ public class CalendarView extends LinearLayout {
     }
 
 
+    /**
+     * 设置当前选中的日期或者月份
+     *
+     * @param year  年
+     * @param month 月
+     * @param day   日
+     */
     public void setCurrentDate(int year, int month, int day) {
         currDate = new DateTime(year, month, day, 0, 0, 0);
+        if (isDayMode) {
+            calendarDayViewPager.setCurrentDate(currDate.toString("yyyy-MM-dd"));
+            calendarDayViewPager.setCurrentItem(getCurrentMonthPosition(currDate));
+        } else {
+            calendarMonthViewPager.setCurrentDate(currDate.toString("yyyy-MM"));
+            calendarMonthViewPager.setCurrentItem(getCurrentYearPosition(currDate));
+        }
     }
 
-    public DateTime getCurrDate() {
-        return currDate;
+
+    public String getCurrDate() {
+        return currDate.toString("yyyy-MM-dd");
     }
 }

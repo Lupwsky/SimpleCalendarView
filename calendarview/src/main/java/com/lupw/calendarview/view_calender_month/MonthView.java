@@ -191,7 +191,7 @@ public class MonthView extends View {
                     dateBean = dataList.get(i);
                     if (tempRect.contains((int) x, (int) y) && tempRect.contains((int) downX, (int) downY)) {
                         if (dateBean.isCanSelected()) {
-                            setCurretnDate(i);
+                            setCurrentDate(i);
                             if (onItemSelectedListener != null) onItemSelectedListener.listener(dateBean, pageIndex);
                         }
                         return true;
@@ -231,7 +231,7 @@ public class MonthView extends View {
     }
 
 
-    public void setCurretnDate(String strCurrDate, int pageIndex) {
+    public void setCurrentDate(String strCurrDate, int pageIndex) {
         for (DateBean bean : dataList) {
             if (bean.getStrDate().equals(strCurrDate)) {
                 if (this.pageIndex == pageIndex) bean.setSelected(true);
@@ -243,7 +243,7 @@ public class MonthView extends View {
         invalidate();
     }
 
-    public void setCurretnDate(int position) {
+    public void setCurrentDate(int position) {
         for (DateBean bean : dataList) {
             bean.setSelected(false);
         }

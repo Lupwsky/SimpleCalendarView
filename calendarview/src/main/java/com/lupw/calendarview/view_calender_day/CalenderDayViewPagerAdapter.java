@@ -31,8 +31,8 @@ public class CalenderDayViewPagerAdapter extends PagerAdapter {
     private OnCalenderSelectListener onCalenderSelectListener;
 
 
-    public CalenderDayViewPagerAdapter(Context context, List<DateTime> dateList,
-                                       DateTime startDate, DateTime endDate) {
+    CalenderDayViewPagerAdapter(Context context, List<DateTime> dateList,
+                                DateTime startDate, DateTime endDate) {
         this.context = context;
         this.dateList = dateList;
         this.startDate = startDate;
@@ -63,8 +63,8 @@ public class CalenderDayViewPagerAdapter extends PagerAdapter {
             public void listener(DateBean dateBean, int pageIndex) {
                 strCurrDate = dateBean.getStrDate();
                 currPageIndex = pageIndex;
-                Log.e("position", "" + pageIndex);
                 if (onCalenderSelectListener != null) onCalenderSelectListener.selected(strCurrDate);
+                notifySetDateChange();
             }
         });
         container.addView(dayView);
@@ -80,7 +80,7 @@ public class CalenderDayViewPagerAdapter extends PagerAdapter {
     }
 
 
-    public void setOnCalenderSelectListener(OnCalenderSelectListener onCalenderSelectListener) {
+    void setOnCalenderSelectListener(OnCalenderSelectListener onCalenderSelectListener) {
         this.onCalenderSelectListener = onCalenderSelectListener;
     }
 
@@ -89,10 +89,16 @@ public class CalenderDayViewPagerAdapter extends PagerAdapter {
      * 刷新View，viewMap正常会保存三个缓存页面
      *
      */
-    public void notifySetDateChange() {
+    private void notifySetDateChange() {
         for (Object o : viewMap.entrySet()) {
             Map.Entry entry = (Map.Entry) o;
-            ((DayView) entry.getValue()).setCurretnDate(strCurrDate, currPageIndex);
+            ((DayView) entry.getValue()).setCurrentDate(strCurrDate, currPageIndex);
         }
+    }
+
+
+    void setCurrentDate(String currentDate) {
+        strCurrDate = currentDate;
+        notifySetDateChange();
     }
 }

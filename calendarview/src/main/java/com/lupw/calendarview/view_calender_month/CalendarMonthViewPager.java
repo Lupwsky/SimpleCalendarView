@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import com.lupw.calendarview.listener.OnCalenderSelectListener;
+import com.lupw.calendarview.view_calender_day.DayView;
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -44,8 +45,11 @@ public class CalendarMonthViewPager extends ViewPager {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        MonthView child = (MonthView) getChildAt(0);
-        int height = child.getViewHeight();
+        int height = 0;
+        if (getChildCount() > 0) {
+            MonthView child = (MonthView) getChildAt(0);
+            height = child.getViewHeight();
+        }
         setMeasuredDimension(widthSize, height);
     }
 
@@ -56,7 +60,6 @@ public class CalendarMonthViewPager extends ViewPager {
             @Override
             public void selected(String date) {
                 onCalenderSelectListener.selected(date);
-                calenderMonthViewPagerAdapter.notifySetDateChange();
             }
         });
         setAdapter(calenderMonthViewPagerAdapter);
@@ -65,5 +68,10 @@ public class CalendarMonthViewPager extends ViewPager {
 
     public void setOnCalenderSelectListener(OnCalenderSelectListener onCalenderSelectListener) {
         this.onCalenderSelectListener = onCalenderSelectListener;
+    }
+
+
+    public void setCurrentDate(String currentDate) {
+        calenderMonthViewPagerAdapter.setCurrentDate(currentDate);
     }
 }

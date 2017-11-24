@@ -42,8 +42,11 @@ public class CalendarDayViewPager extends ViewPager {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        DayView child = (DayView) getChildAt(0);
-        int height = child.getViewHeight();
+        int height = 0;
+        if (getChildCount() > 0) {
+            DayView child = (DayView) getChildAt(0);
+            height = child.getViewHeight();
+        }
         setMeasuredDimension(widthSize, height);
     }
 
@@ -54,7 +57,6 @@ public class CalendarDayViewPager extends ViewPager {
             @Override
             public void selected(String date) {
                 onCalenderSelectListener.selected(date);
-                calenderDayViewPagerAdapter.notifySetDateChange();
             }
         });
         setAdapter(calenderDayViewPagerAdapter);
@@ -63,5 +65,10 @@ public class CalendarDayViewPager extends ViewPager {
 
     public void setOnCalenderSelectListener(OnCalenderSelectListener onCalenderSelectListener) {
         this.onCalenderSelectListener = onCalenderSelectListener;
+    }
+
+
+    public void setCurrentDate(String currentDate) {
+        calenderDayViewPagerAdapter.setCurrentDate(currentDate);
     }
 }

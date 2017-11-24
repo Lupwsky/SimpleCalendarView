@@ -63,8 +63,8 @@ public class CalenderMonthViewPagerAdapter extends PagerAdapter {
             public void listener(DateBean dateBean, int pageIndex) {
                 strCurrDate = dateBean.getStrDate();
                 currPageIndex = pageIndex;
-                Log.e("position", "" + pageIndex);
                 if (onCalenderSelectListener != null) onCalenderSelectListener.selected(strCurrDate);
+                notifySetDateChange();
             }
         });
         container.addView(dayView);
@@ -80,7 +80,7 @@ public class CalenderMonthViewPagerAdapter extends PagerAdapter {
     }
 
 
-    public void setOnCalenderSelectListener(OnCalenderSelectListener onCalenderSelectListener) {
+    void setOnCalenderSelectListener(OnCalenderSelectListener onCalenderSelectListener) {
         this.onCalenderSelectListener = onCalenderSelectListener;
     }
 
@@ -89,10 +89,16 @@ public class CalenderMonthViewPagerAdapter extends PagerAdapter {
      * 刷新View，viewMap正常会保存三个缓存页面
      *
      */
-    public void notifySetDateChange() {
+    private void notifySetDateChange() {
         for (Object o : viewMap.entrySet()) {
             Map.Entry entry = (Map.Entry) o;
-            ((MonthView) entry.getValue()).setCurretnDate(strCurrDate, currPageIndex);
+            ((MonthView) entry.getValue()).setCurrentDate(strCurrDate, currPageIndex);
         }
+    }
+
+
+    void setCurrentDate(String currentDate) {
+        strCurrDate = currentDate;
+        notifySetDateChange();
     }
 }

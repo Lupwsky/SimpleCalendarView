@@ -61,7 +61,7 @@ public class DialogCalendarView extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_calendar_view, null, false);
+        View view = inflater.inflate(R.layout.dialog_calendar_view, null);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         // 设置当前选中的时间
@@ -91,8 +91,6 @@ public class DialogCalendarView extends DialogFragment {
         int endMonth = dateTime.getMonthOfYear();
         int endDay = dateTime.getDayOfMonth();
         calendarView.setRangeDate(2016, 10, 6, endYear, endMonth, endDay);
-
-        calendarView.setCurrentDate(currDate.getYear(), currDate.getMonthOfYear(), currDate.getDayOfMonth());
         calendarView.setOnCalenderSelectListener(new OnSelectedListener() {
             @Override
             public void selected(String date, boolean isDayMode) {
@@ -102,6 +100,7 @@ public class DialogCalendarView extends DialogFragment {
         });
         calendarView.setMonthSelectEnable(false);
         calendarView.create();
+        calendarView.setCurrentDate(currDate.getYear(), currDate.getMonthOfYear(), currDate.getDayOfMonth());
         return view;
     }
 
