@@ -15,6 +15,15 @@ public class DateBean {
     public DateBean() {
     }
 
+    public DateBean(String dayIndex, String strDate, boolean isSelected,
+                    boolean canSelected, boolean canSee) {
+        this.dayIndex = dayIndex;
+        this.strDate = strDate;
+        this.isSelected = isSelected;
+        this.canSelected = canSelected;
+        this.canSee = canSee;
+    }
+
     public String getDayIndex() {
         return dayIndex;
     }

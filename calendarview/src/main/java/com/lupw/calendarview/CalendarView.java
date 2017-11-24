@@ -1,4 +1,4 @@
-package com.lupw.calendarview.view;
+package com.lupw.calendarview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,9 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.lupw.calendarview.R;
 import com.lupw.calendarview.listener.OnCalenderSelectListener;
-import com.lupw.calendarview.listener.OnSelectListener;
+import com.lupw.calendarview.listener.OnSelectedListener;
+import com.lupw.calendarview.view_calender_day.CalendarDayViewPager;
+import com.lupw.calendarview.view_calender_month.CalendarMonthViewPager;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -39,10 +40,10 @@ public class CalendarView extends LinearLayout {
 
     private List<DateTime> monthList;
     private List<DateTime> yearList;
-    private CalendarViewDayPager calendarViewDayPager;
-    private CalendarViewMonthPager calendarViewMonthPager;
+    private CalendarDayViewPager calendarDayViewPager;
+    private CalendarMonthViewPager calendarMonthViewPager;
 
-    private OnSelectListener onSelectListener;
+    private OnSelectedListener onSelectedListener;
     public static DateTime currDate;             // 当前选中的日期
 
     public CalendarView(Context context) {
@@ -89,8 +90,8 @@ public class CalendarView extends LinearLayout {
         llNext = (LinearLayout) view.findViewById(R.id.llNext);
         llYearMoth = (LinearLayout) view.findViewById(R.id.llYearMoth);
         txtYearMonth = (TextView) view.findViewById(R.id.txtYearMonth);
-        calendarViewDayPager = (CalendarViewDayPager) view.findViewById(R.id.calendarViewPager);
-        calendarViewMonthPager = (CalendarViewMonthPager) view.findViewById(R.id.calendarViewMonthPager);
+        calendarDayViewPager = (CalendarDayViewPager) view.findViewById(R.id.calendarDayViewPager);
+        calendarMonthViewPager = (CalendarMonthViewPager) view.findViewById(R.id.calendarMonthViewPager);
 
         // 设置top显示的年月，默认为本月
         txtYearMonth.setText(new DateTime().toString("yyyy年MM月"));
@@ -103,14 +104,14 @@ public class CalendarView extends LinearLayout {
             public void onClick(View v) {
                 int currentItem;
                 if (isDayMode) {
-                    currentItem = calendarViewDayPager.getCurrentItem();
+                    currentItem = calendarDayViewPager.getCurrentItem();
                     if (currentItem > 0) {
-                        calendarViewDayPager.setCurrentItem(currentItem - 1);
+                        calendarDayViewPager.setCurrentItem(currentItem - 1);
                     }
                 } else {
-                    currentItem = calendarViewMonthPager.getCurrentItem();
+                    currentItem = calendarMonthViewPager.getCurrentItem();
                     if (currentItem > 0) {
-                        calendarViewMonthPager.setCurrentItem(currentItem - 1);
+                        calendarMonthViewPager.setCurrentItem(currentItem - 1);
                     }
                 }
             }
@@ -122,14 +123,14 @@ public class CalendarView extends LinearLayout {
             public void onClick(View v) {
                 int currentItem;
                 if (isDayMode) {
-                    currentItem = calendarViewDayPager.getCurrentItem();
+                    currentItem = calendarDayViewPager.getCurrentItem();
                     if (currentItem < monthList.size()) {
-                        calendarViewDayPager.setCurrentItem(currentItem + 1);
+                        calendarDayViewPager.setCurrentItem(currentItem + 1);
                     }
                 } else {
-                    currentItem = calendarViewMonthPager.getCurrentItem();
-                    if (currentItem < monthList.size()) {
-                        calendarViewMonthPager.setCurrentItem(currentItem + 1);
+                    currentItem = calendarMonthViewPager.getCurrentItem();
+                    if (currentItem < yearList.size()) {
+                        calendarMonthViewPager.setCurrentItem(currentItem - 1);
                     }
                 }
             }
@@ -140,14 +141,14 @@ public class CalendarView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 if (!isMonthSelectEnable) return;
-                if (calendarViewDayPager.getVisibility() == GONE) {
-                    calendarViewDayPager.setVisibility(VISIBLE);
-                    calendarViewMonthPager.setVisibility(GONE);
+                if (calendarDayViewPager.getVisibility() == GONE) {
+                    calendarDayViewPager.setVisibility(VISIBLE);
+                    calendarMonthViewPager.setVisibility(GONE);
                     isDayMode = true;
                     txtYearMonth.setText(currMonth);
                 } else {
-                    calendarViewDayPager.setVisibility(GONE);
-                    calendarViewMonthPager.setVisibility(VISIBLE);
+                    calendarDayViewPager.setVisibility(GONE);
+                    calendarMonthViewPager.setVisibility(VISIBLE);
                     isDayMode = false;
                     txtYearMonth.setText(currYear);
                 }
@@ -167,12 +168,12 @@ public class CalendarView extends LinearLayout {
         DateTime endDate = new DateTime(endYear, endMonth, endDay, 0, 0, 0);
 
         monthList = getMonthList();
-        calendarViewDayPager.setDate(monthList, startDate, endDate);
-        calendarViewDayPager.setCurrentItem(getCurrentMonthPosition(currDate));
+        calendarDayViewPager.setDate(monthList, startDate, endDate);
+        calendarDayViewPager.setCurrentItem(getCurrentMonthPosition(currDate));
 
         yearList = getYearList();
-        calendarViewMonthPager.setDate(yearList, startDate, endDate);
-        calendarViewMonthPager.setCurrentItem(getCurrentYearPosition(currDate));
+        calendarMonthViewPager.setDate(yearList, startDate, endDate);
+        calendarMonthViewPager.setCurrentItem(getCurrentYearPosition(currDate));
     }
 
 
@@ -234,24 +235,6 @@ public class CalendarView extends LinearLayout {
     }
 
 
-    /**
-     * 获取
-     *
-     * @return 当前年份在列表中的位置
-     */
-    private int getCurrentYearPosition(DateTime dateTime) {
-        int year = dateTime.getYear();
-
-        DateTime tempDate;
-        for (int i = 0; i < yearList.size(); i++) {
-            tempDate = yearList.get(i);
-            if (tempDate.getYear() == year) {
-                return i;
-            }
-        }
-        return 0;
-    }
-
 
     /**
      * 获取年份列表
@@ -272,18 +255,37 @@ public class CalendarView extends LinearLayout {
 
 
     /**
+     * 获取
+     *
+     * @return 当前年份在列表中的位置
+     */
+    private int getCurrentYearPosition(DateTime dateTime) {
+        int year = dateTime.getYear();
+
+        DateTime tempDate;
+        for (int i = 0; i < yearList.size(); i++) {
+            tempDate = yearList.get(i);
+            if (tempDate.getYear() == year) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+
+    /**
      * 设置日历选中监听事件
      *
-     * @param onSelectListener 日历选中监听事件
+     * @param onSelectedListener 日历选中监听事件
      */
-    public void setOnCalenderSelectListener(OnSelectListener onSelectListener) {
-        this.onSelectListener = onSelectListener;
+    public void setOnCalenderSelectListener(OnSelectedListener onSelectedListener) {
+        this.onSelectedListener = onSelectedListener;
     }
 
 
     private void initCalendarDayViewPager() {
         // 设置日历控件翻页监听事件
-        calendarViewDayPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        calendarDayViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -302,12 +304,12 @@ public class CalendarView extends LinearLayout {
         });
 
         // 设置选中日历某一天监听事件
-        calendarViewDayPager.setOnCalenderSelectListener(new OnCalenderSelectListener() {
+        calendarDayViewPager.setOnCalenderSelectListener(new OnCalenderSelectListener() {
             @Override
             public void selected(String date) {
-                if (onSelectListener != null) {
+                if (onSelectedListener != null) {
                     currDate = new DateTime(date);
-                    onSelectListener.selected(date, isDayMode);
+                    onSelectedListener.selected(date, isDayMode);
                 }
             }
         });
@@ -315,7 +317,7 @@ public class CalendarView extends LinearLayout {
 
 
     private void initCalendarMonthViewPager() {
-        calendarViewMonthPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        calendarMonthViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -334,12 +336,12 @@ public class CalendarView extends LinearLayout {
         });
 
         // 设置选中月历监听事件
-        calendarViewMonthPager.setOnCalenderSelectListener(new OnCalenderSelectListener() {
+        calendarMonthViewPager.setOnCalenderSelectListener(new OnCalenderSelectListener() {
             @Override
             public void selected(String date) {
-                if (onSelectListener != null) {
+                if (onSelectedListener != null) {
                     currDate = new DateTime(date);
-                    onSelectListener.selected(date, isDayMode);
+                    onSelectedListener.selected(date, isDayMode);
                 }
             }
         });

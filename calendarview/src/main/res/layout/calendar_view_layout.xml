@@ -69,25 +69,20 @@
         </LinearLayout>
     </RelativeLayout>
     
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/colorGrayLine"/>
-    
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <com.lupw.calendarview.view.CalendarViewDayPager
-            android:id="@+id/calendarViewPager"
+        <com.lupw.calendarview.view_calender_day.CalendarDayViewPager
+            android:id="@+id/calendarDayViewPager"
             android:layout_width="match_parent"
-            android:layout_height="290dp"
+            android:layout_height="wrap_content"
             android:background="@android:color/white"/>
-        
-        <com.lupw.calendarview.view.CalendarViewMonthPager
-            android:visibility="gone"
-            android:id="@+id/calendarViewMonthPager"
+    
+        <com.lupw.calendarview.view_calender_month.CalendarMonthViewPager
+            android:id="@+id/calendarMonthViewPager"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
             android:background="@android:color/white"/>
     </RelativeLayout>
 </LinearLayout>

@@ -5,6 +5,6 @@ package com.lupw.calendarview.listener;
  * Admin Lupw
  */
 
-public interface OnItemClickListener {
-    void listener(int position);
+public interface OnSelectedListener {
+    void selected(String date, boolean isDayMode);
 }

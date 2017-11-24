@@ -1,4 +1,4 @@
-package com.lupw.calendarview.view;
+package com.lupw.calendarview;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -6,8 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.*;
-import com.lupw.calendarview.R;
-import com.lupw.calendarview.listener.OnSelectListener;
+import com.lupw.calendarview.listener.OnSelectedListener;
 import com.lupw.calendarview.utils.DensityUtil;
 import org.joda.time.DateTime;
 
@@ -17,7 +16,7 @@ import org.joda.time.DateTime;
  */
 
 public class DialogCalendarView extends DialogFragment {
-    private OnSelectListener onSelectListener;
+    private OnSelectedListener onSelectedListener;
     private CalendarView calendarView;
     private DateTime currDate;
 
@@ -62,7 +61,7 @@ public class DialogCalendarView extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_calendar_view, null);
+        View view = inflater.inflate(R.layout.dialog_calendar_view, null, false);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         // 设置当前选中的时间
@@ -94,10 +93,10 @@ public class DialogCalendarView extends DialogFragment {
         calendarView.setRangeDate(2016, 10, 6, endYear, endMonth, endDay);
 
         calendarView.setCurrentDate(currDate.getYear(), currDate.getMonthOfYear(), currDate.getDayOfMonth());
-        calendarView.setOnCalenderSelectListener(new OnSelectListener() {
+        calendarView.setOnCalenderSelectListener(new OnSelectedListener() {
             @Override
             public void selected(String date, boolean isDayMode) {
-                if (onSelectListener != null) onSelectListener.selected(date, isDayMode);
+                if (onSelectedListener != null) onSelectedListener.selected(date, isDayMode);
                 dismiss();
             }
         });
@@ -107,7 +106,7 @@ public class DialogCalendarView extends DialogFragment {
     }
 
 
-    public void setOnSelectListener(OnSelectListener onSelectListener) {
-        this.onSelectListener = onSelectListener;
+    public void setOnSelectedListener(OnSelectedListener onSelectedListener) {
+        this.onSelectedListener = onSelectedListener;
     }
 }

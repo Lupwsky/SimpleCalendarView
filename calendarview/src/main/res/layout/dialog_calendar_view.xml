@@ -6,9 +6,10 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:background="@drawable/view_round_backgroup">
         
-        <com.lupw.calendarview.view.CalendarView
+        <com.lupw.calendarview.CalendarView
             android:layout_margin="5dp"
             android:id="@+id/calendarView"
             android:layout_width="match_parent"

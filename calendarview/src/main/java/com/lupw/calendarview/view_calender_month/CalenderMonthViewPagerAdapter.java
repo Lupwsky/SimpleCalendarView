@@ -1,13 +1,14 @@
-package com.lupw.calendarview.adapter;
+package com.lupw.calendarview.view_calender_month;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import com.lupw.calendarview.bean.DateBean;
 import com.lupw.calendarview.listener.OnCalenderSelectListener;
-import com.lupw.calendarview.view.CalendarView;
-import com.lupw.calendarview.view.DayView;
+import com.lupw.calendarview.listener.OnItemSelectedListener;
+import com.lupw.calendarview.utils.DateTimeUtils;
 import org.joda.time.DateTime;
 
 import java.util.HashMap;
@@ -19,23 +20,24 @@ import java.util.Map;
  * Admin Lupw
  */
 
-public class CalenderViewDayPagerAdapter extends PagerAdapter {
+public class CalenderMonthViewPagerAdapter extends PagerAdapter {
     private Context context;
-    private List<DateTime> dateList;
-    private DateTime startDate, endDate;
-    private String strCurrDate;
-    private Map<Integer, DayView> viewMap = new HashMap<>();
+    private List<DateTime> dateList;     // 月份的列表，例如2016-01-01至2017-12-12
+    private DateTime startDate, endDate; // 开始日期范围和结束日期范围
+    private String strCurrDate;          // 当前记录的时间
+    private int currPageIndex;           // 当前选择日期的时候ViewPager的位置
+    private Map<Integer, MonthView> viewMap = new HashMap<>();  // 缓存ViewPager已经加载的View
 
     private OnCalenderSelectListener onCalenderSelectListener;
 
 
-    public CalenderViewDayPagerAdapter(Context context, List<DateTime> dateList,
-                                       DateTime startDate, DateTime endDate) {
+    public CalenderMonthViewPagerAdapter(Context context, List<DateTime> dateList,
+                                         DateTime startDate, DateTime endDate) {
         this.context = context;
         this.dateList = dateList;
         this.startDate = startDate;
         this.endDate = endDate;
-        Log.e("TAG", "TEST");
+        strCurrDate = new DateTime().toString("yyyy-MM-dd");
     }
 
 
@@ -54,13 +56,15 @@ public class CalenderViewDayPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         // 暂时每次新创建一个View，为了提高效率应该设置一个缓存来保存最近的几个View
-        DayView dayView = new DayView(context);
-        dayView.setData(dateList.get(position), startDate, endDate, CalendarView.currDate);
-        dayView.setOnCalenderSelectListener(new OnCalenderSelectListener() {
+        MonthView dayView = new MonthView(context, position);
+        dayView.setData(DateTimeUtils.getMonthData(dateList.get(position), startDate, endDate, new DateTime(strCurrDate)));
+        dayView.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
-            public void selected(String date) {
-                strCurrDate = date;
-                onCalenderSelectListener.selected(strCurrDate);
+            public void listener(DateBean dateBean, int pageIndex) {
+                strCurrDate = dateBean.getStrDate();
+                currPageIndex = pageIndex;
+                Log.e("position", "" + pageIndex);
+                if (onCalenderSelectListener != null) onCalenderSelectListener.selected(strCurrDate);
             }
         });
         container.addView(dayView);
@@ -81,10 +85,14 @@ public class CalenderViewDayPagerAdapter extends PagerAdapter {
     }
 
 
+    /**
+     * 刷新View，viewMap正常会保存三个缓存页面
+     *
+     */
     public void notifySetDateChange() {
         for (Object o : viewMap.entrySet()) {
             Map.Entry entry = (Map.Entry) o;
-            ((DayView) entry.getValue()).notifySetDateChange(strCurrDate);
+            ((MonthView) entry.getValue()).setCurretnDate(strCurrDate, currPageIndex);
         }
     }
 }

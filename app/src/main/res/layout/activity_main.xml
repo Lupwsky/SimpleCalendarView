@@ -6,7 +6,7 @@
               android:orientation="vertical"
               tools:context="com.lupw.simplecalendarview.MainActivity">
     
-    <com.lupw.calendarview.view.CalendarView
+    <com.lupw.calendarview.CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

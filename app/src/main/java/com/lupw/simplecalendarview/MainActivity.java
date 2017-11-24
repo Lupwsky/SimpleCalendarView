@@ -4,9 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import com.lupw.calendarview.listener.OnSelectListener;
-import com.lupw.calendarview.view.CalendarView;
-import com.lupw.calendarview.view.DialogCalendarView;
+import com.lupw.calendarview.CalendarView;
+import com.lupw.calendarview.DialogCalendarView;
 
 public class MainActivity extends AppCompatActivity {
     private String currDate;
@@ -23,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnOpen = findViewById(R.id.btnOpen);
         btnOpen.setOnClickListener(v -> {
             DialogCalendarView dialogCalendarView = DialogCalendarView.getInstance(currDate);
-            dialogCalendarView.setOnSelectListener((date, isDayMode) -> {
+            dialogCalendarView.setOnSelectedListener((date, isDayMode) -> {
                 Log.e("calendar", date);
                 currDate = date;
             });

@@ -1,9 +1,8 @@
-package com.lupw.calendarview.view;
+package com.lupw.calendarview.view_calender_day;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import com.lupw.calendarview.adapter.CalenderViewMonthPagerAdapter;
 import com.lupw.calendarview.listener.OnCalenderSelectListener;
 import org.joda.time.DateTime;
 
@@ -14,18 +13,19 @@ import java.util.List;
  * Admin Lupw
  */
 
-public class CalendarViewMonthPager extends ViewPager {
+public class CalendarDayViewPager extends ViewPager {
     private Context context;
-    private CalenderViewMonthPagerAdapter calenderViewMonthPagerAdapter;
+    private CalenderDayViewPagerAdapter calenderDayViewPagerAdapter;
+
     private OnCalenderSelectListener onCalenderSelectListener;
 
-    public CalendarViewMonthPager(Context context) {
+    public CalendarDayViewPager(Context context) {
         super(context);
         init(context, null);
     }
 
 
-    public CalendarViewMonthPager(Context context, AttributeSet attrs) {
+    public CalendarDayViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
@@ -38,22 +38,30 @@ public class CalendarViewMonthPager extends ViewPager {
     }
 
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        DayView child = (DayView) getChildAt(0);
+        int height = child.getViewHeight();
+        setMeasuredDimension(widthSize, height);
+    }
+
+
     public void setDate(List<DateTime> dateList, DateTime startDate, DateTime endDate) {
-        calenderViewMonthPagerAdapter =
-                new CalenderViewMonthPagerAdapter(context, dateList, startDate, endDate);
-        calenderViewMonthPagerAdapter.setOnCalenderSelectListener(new OnCalenderSelectListener() {
+        calenderDayViewPagerAdapter = new CalenderDayViewPagerAdapter(context, dateList, startDate, endDate);
+        calenderDayViewPagerAdapter.setOnCalenderSelectListener(new OnCalenderSelectListener() {
             @Override
             public void selected(String date) {
                 onCalenderSelectListener.selected(date);
-                calenderViewMonthPagerAdapter.notifySetDateChange();
+                calenderDayViewPagerAdapter.notifySetDateChange();
             }
         });
-        setAdapter(calenderViewMonthPagerAdapter);
+        setAdapter(calenderDayViewPagerAdapter);
     }
 
 
     public void setOnCalenderSelectListener(OnCalenderSelectListener onCalenderSelectListener) {
         this.onCalenderSelectListener = onCalenderSelectListener;
     }
-
 }
