@@ -22,23 +22,34 @@
                 android:layout_centerInParent="true"
                 android:textSize="16sp"
                 android:textColor="@color/colorWhite"
-                android:text="测试页面"/>
+                android:text="日历控件"/>
+            
+            <TextView
+                android:id="@+id/txtOpenCalender"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textColor="@color/colorWhite"
+                android:text="弹出日历"/>
         </RelativeLayout>
         
+        
+        <com.lupw.calendarview.CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        
         <Button
-            android:id="@+id/btnCalender"
+            android:id="@+id/btnOpen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="日历测试"/>
-    
-        <Button
-            android:id="@+id/btnWheelView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="滑动轮"/>
+            android:layout_marginTop="20dp"
+            android:text="弹窗"/>
     </LinearLayout>
 
 </layout>

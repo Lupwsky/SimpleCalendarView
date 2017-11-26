@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context="com.lupw.simplecalendarview.CalenderActivity">
+        tools:context="com.lupw.simplecalendarview.WheelViewActivity">
     <data/>
     
     <LinearLayout
@@ -22,23 +22,12 @@
                 android:layout_centerInParent="true"
                 android:textSize="16sp"
                 android:textColor="@color/colorWhite"
-                android:text="测试页面"/>
+                android:text="滑动轮"/>
         </RelativeLayout>
         
-        <Button
-            android:id="@+id/btnCalender"
+        <com.lupw.calendarview.WheelView
+            android:id="@+id/wheelView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="日历测试"/>
-    
-        <Button
-            android:id="@+id/btnWheelView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="滑动轮"/>
+            android:layout_height="wrap_content"/>
     </LinearLayout>
-
 </layout>

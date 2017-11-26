@@ -1,32 +1,26 @@
 package com.lupw.simplecalendarview;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
-import com.lupw.calendarview.CalendarView;
-import com.lupw.calendarview.DialogCalendarView;
+import android.support.v7.app.AppCompatActivity;
+import com.lupw.simplecalendarview.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-    private String currDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        Intent intent = new Intent();
+        binding.btnCalender.setOnClickListener(v -> {
+            intent.setClass(MainActivity.this, CalenderActivity.class);
+            startActivity(intent);
+        });
 
-        CalendarView calendarView = findViewById(R.id.calendarView);
-        calendarView.setOnCalenderSelectListener((date, isDay) -> Log.e("Caneldar", date + " : " + isDay));
-        calendarView.create();
-
-        Button btnOpen = findViewById(R.id.btnOpen);
-        btnOpen.setOnClickListener(v -> {
-            DialogCalendarView dialogCalendarView = DialogCalendarView.getInstance(currDate);
-            dialogCalendarView.setOnSelectedListener((date, isDayMode) -> {
-                Log.e("calendar", date);
-                currDate = date;
-            });
-            dialogCalendarView.show(getSupportFragmentManager(), "calendar");
+        binding.btnWheelView.setOnClickListener(v -> {
+            intent.setClass(MainActivity.this, WheelViewActivity.class);
+            startActivity(intent);
         });
     }
 }
