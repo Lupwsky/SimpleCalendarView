@@ -35,7 +35,7 @@ public class PopupWindowCalendar {
                 .setView(view)
                 .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 .setOutsideTouchable(true)
-                .setAnimationStyle(R.style.topPushAnimation)
+//                .setAnimationStyle(R.style.topPushAnimation)
                 .setViewOnclickListener(new CommonPopupWindow.ViewInterface() {
                     @Override
                     public void getChildView(CommonPopupWindow popupWindow, View contentView, int layoutResId) {

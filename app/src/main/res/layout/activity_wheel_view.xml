@@ -13,7 +13,7 @@
             android:id="@+id/llDefToolBar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimaryDark">
             
             <TextView
                 android:id="@+id/txtPageTitle"
@@ -25,9 +25,8 @@
                 android:text="滑动轮"/>
         </RelativeLayout>
         
-        <com.lupw.calendarview.WheelView
-            android:id="@+id/wheelView"
+        <com.lupw.calendarview.TimeWhellView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="300dp"/>
     </LinearLayout>
 </layout>

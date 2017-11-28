@@ -16,7 +16,7 @@ public class CalenderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_calender);
 
         binding.calendarView.setOnCalenderSelectListener((date, isDay) -> Log.e("Caneldar", date + " : " + isDay));
         binding.calendarView.create();
