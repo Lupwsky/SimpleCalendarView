@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -17,11 +18,11 @@ import java.util.Arrays;
  * Admin Lupw
  */
 
-public class TimeWhellView extends LinearLayout {
-    private Context context;
+public class TimeWheelView extends LinearLayout {
     private StringScrollPicker hourView;
     private StringScrollPicker minView;
     private StringScrollPicker secView;
+    public enum Mode {HOUR_MIN_SEC, HOUR_MIN}
 
     private static final String[] HOURS = {"00时", "01时", "02时", "03时", "04时", "05时", "06时", "07时", "08时", "09时",
             "10时", "11时", "12时", "13时", "14时", "15时", "16时", "17时", "18时", "19时",
@@ -42,19 +43,19 @@ public class TimeWhellView extends LinearLayout {
             "50秒", "51秒", "52秒", "53秒", "54秒", "55秒", "56秒", "57秒", "58秒", "59秒"};
 
 
-    public TimeWhellView(Context context) {
+    public TimeWheelView(Context context) {
         super(context);
         init(context);
     }
 
 
-    public TimeWhellView(Context context, @Nullable AttributeSet attrs) {
+    public TimeWheelView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
 
-    public TimeWhellView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public TimeWheelView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
@@ -62,7 +63,6 @@ public class TimeWhellView extends LinearLayout {
 
     @SuppressLint("InflateParams")
     private void init(Context context) {
-        this.context = context;
         View view = LayoutInflater.from(context).inflate(R.layout.time_wheel_view, null, false);
         hourView = (StringScrollPicker) view.findViewById(R.id.hourView);
         minView = (StringScrollPicker) view.findViewById(R.id.minView);
@@ -70,9 +70,88 @@ public class TimeWhellView extends LinearLayout {
         hourView.setData(new ArrayList<CharSequence>(Arrays.asList(HOURS)));
         minView.setData(new ArrayList<CharSequence>(Arrays.asList(MINS)));
         secView.setData(new ArrayList<CharSequence>(Arrays.asList(SECS)));
-        hourView.setSelectedPosition(2);
-        secView.setSelectedPosition(2);
-        minView.setSelectedPosition(2);
+
         addView(view);
+    }
+
+
+    /**
+     * 设置TimePiker的模式
+     *
+     * @param mode TimePicker的模式
+     */
+    public void setMode(Mode mode) {
+        switch (mode) {
+            case HOUR_MIN_SEC:
+                hourView.setVisibility(VISIBLE);
+                minView.setVisibility(VISIBLE);
+                secView.setVisibility(VISIBLE);
+                break;
+            case HOUR_MIN:
+                hourView.setVisibility(VISIBLE);
+                minView.setVisibility(VISIBLE);
+                secView.setVisibility(GONE);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    /**
+     * 设置时间选择器默认的时间
+     *
+     * @param hour 时
+     * @param min  分
+     * @param sec  秒
+     */
+    public void setTime(String hour, String min, String sec) {
+        String timeFiled, tempTimeFiled;
+        int i;
+
+        timeFiled = hour + "时";
+        for (i = 0; i < HOURS.length; i ++) {
+            tempTimeFiled = HOURS[i];
+            if (tempTimeFiled.equals(timeFiled)) {
+                break;
+            }
+        }
+        hourView.setSelectedPosition(i);
+
+        timeFiled = min + "分";
+        for (i = 0; i < MINS.length; i ++) {
+            tempTimeFiled = MINS[i];
+            if (tempTimeFiled.equals(timeFiled)) {
+                break;
+            }
+        }
+        minView.setSelectedPosition(i);
+
+        timeFiled = sec + "秒";
+        for (i = 0; i < SECS.length; i ++) {
+            tempTimeFiled = SECS[i];
+            if (tempTimeFiled.equals(timeFiled)) {
+                break;
+            }
+        }
+        secView.setSelectedPosition(i);
+    }
+
+
+    public String getHour() {
+        int i = hourView.getSelectedPosition();
+        return HOURS[i].replace("时", "");
+    }
+
+
+    public String getMin() {
+        int i = minView.getSelectedPosition();
+        return MINS[i].replace("分", "");
+    }
+
+
+    public String getSec() {
+        int i = secView.getSelectedPosition();
+        return SECS[i].replace("秒", "");
     }
 }

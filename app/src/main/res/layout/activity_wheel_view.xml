@@ -22,11 +22,17 @@
                 android:layout_centerInParent="true"
                 android:textSize="16sp"
                 android:textColor="@color/colorWhite"
-                android:text="滑动轮"/>
+                android:text="时间选择器"/>
         </RelativeLayout>
         
-        <com.lupw.calendarview.TimeWhellView
+        <com.lupw.calendarview.TimeWheelView
             android:layout_width="match_parent"
-            android:layout_height="300dp"/>
+            android:layout_height="wrap_content"/>
+        
+        <Button
+            android:id="@+id/btnOpenDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="弹窗"/>
     </LinearLayout>
 </layout>
